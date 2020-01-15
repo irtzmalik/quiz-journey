@@ -7,12 +7,9 @@ module.exports = function getQuestions(category, difficulty) {
         music: 12,
         videogames: 15
     };
-    axios.get(`https://opentdb.com/api.php?amount=10&category=${categories[category]}&difficulty=${difficulty}`)
-    .then(res => {
-        console.log(res);
-        return res;
-    })
+    return axios.get(`https://opentdb.com/api.php?amount=10&category=${categories[category]}&difficulty=${difficulty}`)
+    .then(res => res.data.results)
     .catch(err => {
-        throw err;
+        console.error(err);
     });
 };
