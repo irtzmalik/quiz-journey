@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Destination = sequelize.define('Destination', {
+  const Locations = sequelize.define('Locations', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -10,5 +10,5 @@ module.exports = (sequelize, DataTypes) => {
     image: DataTypes.STRING,
     category: DataTypes.INTEGER,
   });
-  return Destination;
+  return Locations;
 };
