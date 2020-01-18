@@ -13,10 +13,9 @@ router.get('/questions/:category/:difficulty', (req, res) => {
 });
 
 router.get('/token/:token', function(req, res) {
-    console.log(req.params.token);
     db.Users.findOne({
       where: {
-        passcode: req.params.token
+        token: req.params.token
       }
     })
       .then(function(result) {
