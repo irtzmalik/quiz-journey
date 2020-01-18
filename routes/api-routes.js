@@ -11,4 +11,15 @@ router.get('/questions/:category/:difficulty', (req, res) => {
     });
 });
 
+router.post('/users', (req,res) => {
+    new Promise(function(resolve, reject) {
+        console.log(req.body);
+        resolve(controllers.createUser(req.body.name));
+    }).then(function(result) {
+        res.json(result);
+    });
+});
+
+
+
 module.exports = router;
