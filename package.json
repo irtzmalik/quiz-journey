@@ -4,7 +4,7 @@
   "description": "A trivia adventure game for educational purposes.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "nodemon server.js"
   },
   "repository": {
@@ -25,7 +25,8 @@
     "express-handlebars": "^3.1.0",
     "mysql2": "^2.1.0",
     "nodemon": "^2.0.2",
-    "sequelize": "^5.21.3"
+    "sequelize": "^5.21.3",
+    "sha1": "^1.1.1"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
