@@ -7,3 +7,10 @@ test('Location should be Geography and Difficulty is Hard', () => {
         expect(data[1].difficulty).toEqual('hard');
     });
 });
+
+test('Array lenght should be 10', () => {
+    expect.assertions(1);
+    return controllers.getQuestions('geography', 'hard').then(data => {
+        expect(data.length).toEqual(10);
+    });
+})
