@@ -1,5 +1,6 @@
 const controllers = require('../controllers/index');
 const router = require('express').Router();
+const db = require("../models");
 
 router.get('/', (req, res) => res.json('Sample API get endpoint'));
 
@@ -11,6 +12,35 @@ router.get('/questions/:category/:difficulty', (req, res) => {
     });
 });
 
+router.get('/token/:token', function(req, res) {
+    db.Users.findOne({
+      where: {
+        token: req.params.token
+      }
+    })
+      .then(function(result) {
+        res.json(result);
+      });
+  });
+
+  router.get('/location/', function(req, res) {
+    db.Locations.findAll({})
+    .then(function(result) {
+      res.json(result);
+    });
+});
+
+router.get('/characters/:id', function(req, res){
+    db.Characters.findAll({
+        where: {
+          user_id: req.params.id
+        }
+    })
+    .then(function(result) {
+      res.json(result);
+    });
+});
+
 router.post('/users', (req,res) => {
     new Promise(function(resolve, reject) {
         console.log(req.body);
@@ -19,7 +49,5 @@ router.post('/users', (req,res) => {
         res.json(result);
     });
 });
-
-
 
 module.exports = router;
