@@ -1,6 +1,6 @@
 <h1>Game page</h1>
 
-<div>
+<div id="game">
 Account name: {{name}}<br>
 Account token: {{token}}
 </div>
@@ -10,4 +10,8 @@ List of characters<br>
 + Add character
 </div>
 
-<script>test();</script>
+<script>
+    $(document).ready(() => {
+        game({{id}});
+    });
+</script>
