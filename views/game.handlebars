@@ -1,17 +1,5 @@
-<h1>Game page</h1>
+<div id="game"></div>
 
-<div id="game">
-Account name: {{name}}<br>
-Account token: {{token}}
-</div>
 
-<div>
-List of characters<br>
-+ Add character
-</div>
-
-<script>
-$(document).ready(() => {
-    init({{id}});
-});
-</script>
+<script src="/assets/js/game.js"></script>
+<script>init("{{token}}");</script>
