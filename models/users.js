@@ -1,3 +1,4 @@
+
 module.exports = (sequelize, DataTypes) => {
   const Users = sequelize.define('Users', {
     id: {
@@ -7,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     name: DataTypes.STRING,
-    passcode: DataTypes.STRING,
+    token: DataTypes.STRING,
   });
   return Users;
 };

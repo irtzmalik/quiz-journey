@@ -25,7 +25,8 @@
     "express": "^4.17.1",
     "mysql2": "^2.1.0",
     "nodemon": "^2.0.2",
-    "sequelize": "^5.21.3"
+    "sequelize": "^5.21.3",
+    "sha1": "^1.1.1"
   },
   "jest": {
     "testEnvironment": "node",
@@ -39,5 +40,6 @@
     "eslint-plugin-import": "^2.19.1",
     "jest": "^24.9.0",
     "supertest": "^4.0.2"
+    
   }
 }
