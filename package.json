@@ -6,7 +6,6 @@
   "scripts": {
     "test": "jest",
     "start": "nodemon server.js"
-    
   },
   "repository": {
     "type": "git",
@@ -26,6 +25,7 @@
     "mysql2": "^2.1.0",
     "nodemon": "^2.0.2",
     "sequelize": "^5.21.3",
+    "sequelize-mock": "^0.10.2",
     "sha1": "^1.1.1"
   },
   "jest": {
@@ -40,6 +40,5 @@
     "eslint-plugin-import": "^2.19.1",
     "jest": "^24.9.0",
     "supertest": "^4.0.2"
-    
   }
 }
