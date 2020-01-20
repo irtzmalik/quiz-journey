@@ -5,18 +5,8 @@ router.get('/', (req, res) => {
   res.render("index");
 });
 
-
 router.get('/:token', (req, res) => {
-  if (req.params.token === "43n895n4y39432") {
-    let account = {
-      id: 1,
-      name: "Winson",
-      token: "43n895n4y39432"
-    };
-    res.render("game", account);
-  } else {
-    res.redirect('/');
-  }
+  res.render("game", { token: req.params.token });
 });
 
 // Place this route below all others to send he index.html file

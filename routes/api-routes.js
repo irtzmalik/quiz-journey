@@ -11,35 +11,38 @@ router.get('/questions/:category/:difficulty', (req, res) => {
 });
 
 router.get('/token/:token', function(req, res) {
-    db.Users.findOne({
-      where: {
-        token: req.params.token
-      }
-    })
-      .then(function(result) {
+    new Promise(function(resolve, reject) {
+        resolve(controllers.getUserByToken(req.params.token));
+    }).then(function(result) {
         res.json(result);
       });
   });
 
-  router.get('/location/', function(req, res) {
-    db.Locations.findAll({})
-    .then(function(result) {
+  router.get('/locations', function(req, res) {
+    new Promise(function(resolve, reject) {
+        resolve(controllers.getLocations());
+    }).then(function(result) {
       res.json(result);
     });
 });
 
-router.get('/characters/:id', function(req, res){
-    db.Characters.findAll({
-        where: {
-          user_id: req.params.id
-        }
-    })
-    .then(function(result) {
+router.get('/users/:id', function(req, res){
+    new Promise(function(resolve, reject) {
+        resolve(controllers.getUser(req.params.id));
+    }).then(function(result) {
       res.json(result);
     });
 });
 
-router.post('/users', (req,res) => {
+router.get('/characters/:user_id', function(req, res){
+    new Promise(function(resolve, reject) {
+        resolve(controllers.getCharacters(req.params.user_id));
+    }).then(function(result) {
+      res.json(result);
+    });
+});
+
+router.post('/users', (req, res) => {
     new Promise(function(resolve, reject) {
         console.log(req.body);
         resolve(controllers.createUser(req.body.name));
@@ -48,5 +51,14 @@ router.post('/users', (req,res) => {
     });
 });
  router.get('/about', function (req, res) { res.send('About this wiki'); })
+
+router.post('/characters', (req, res) => {
+    new Promise(function(resolve, reject) {
+        console.log(req.body);
+        resolve(controllers.createCharacter(req.body.name, req.body.user_id));
+    }).then(function(result) {
+        res.json(result);
+    });
+});
 
 module.exports = router;

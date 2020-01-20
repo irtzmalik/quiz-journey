@@ -1,8 +1,8 @@
-module.exports = function getUser(id) {
+module.exports = function getUserByToken(token) {
   const db = require('../models/index');
   return db.Users.findOne({
     where: {
-      id: id
+      token: token
     }
   });
 };
