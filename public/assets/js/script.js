@@ -1,24 +1,27 @@
-const game = id => {
+const init = id => {
 
-    const init = id => {
+    const getData = id => {
         $.when(
             $.getJSON(`/api/users/${id}`),
             $.getJSON(`/api/characters/${id}`),
             $.getJSON(`/api/locations`),
         ).done((user, characters, locations) => {
-            start(user[0], characters[0], locations[0]);
+            let data = {
+                user: user[0],
+                characters: characters[0],
+                locations: locations[0]
+            };
+            main(data);
         }).fail(err => {
             alert("Unable to fetch data.\n" + "Error code: " + err.status);
         });
     };
 
-    const start = (user, characters, locations) => {
-        console.log(user);
-        console.log(characters);
-        console.log(locations);
+    const main = data => {
+        console.log(data);
     };
 
-    init(id);
+    getData(id);
 };
 
 
