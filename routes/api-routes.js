@@ -2,8 +2,6 @@ const controllers = require('../controllers/index');
 const router = require('express').Router();
 const db = require("../models");
 
-router.get('/', (req, res) => res.json('Sample API get endpoint'));
-
 router.get('/questions/:category/:difficulty', (req, res) => {
     new Promise(function(resolve, reject) {
         resolve(controllers.getQuestions(req.params.category, req.params.difficulty));
@@ -52,6 +50,7 @@ router.post('/users', (req, res) => {
         res.json(result);
     });
 });
+ router.get('/about', function (req, res) { res.send('About this wiki'); })
 
 router.post('/characters', (req, res) => {
     new Promise(function(resolve, reject) {
