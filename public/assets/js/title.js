@@ -20,7 +20,8 @@ const init = () => {
     };
 
     const newGame = () => {
-        let name = prompt("Enter your name").trim();
+        let name = prompt("Enter your name");
+        if (name) name = name.trim();
         if (!name) return alert("Please enter a name.");
         $.post("/api/users", { name: name })
         .done(result => {
@@ -32,7 +33,8 @@ const init = () => {
     };
 
     const loadGame = () => {
-        let token = prompt("Enter your save code").trim();
+        let token = prompt("Enter your save code");
+        if (token) token = token.trim();
         if (!token) return alert("Game not loaded.");
         $.get(`/api/token/${token}`)
         .done(result => {
