@@ -61,4 +61,13 @@ router.post('/characters', (req, res) => {
     });
 });
 
+router.put('/characters', (req, res) => {
+    new Promise(function(resolve, reject) {
+        console.log(req.body);
+        resolve(controllers.updateCharacter(req.body.user_id,req.body.points));
+    }).then(function(result) {
+        res.json(result);
+    });
+});
+
 module.exports = router;
