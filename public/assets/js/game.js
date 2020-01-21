@@ -1,5 +1,7 @@
 const init = token => {
 
+    let data, activeCharacter, activeLocation;
+
     const checkToken = token => {
         $.getJSON(`/api/token/${token}`)
         .done(result => {
@@ -22,30 +24,17 @@ const init = token => {
             $.getJSON(`/api/locations`)
         )
         .done((user, characters, locations) => {
-            main({
+            data = {
                 user: user[0],
                 characters: characters[0],
                 locations: locations[0]
-            });
+            };
+            console.log(data);
+            main(data);
         })
         .fail(err => {
             alert("unable to fetch data");
             location.href = "/";
-
-            // for testing
-            /*
-            main({
-                user: { id: 1, name: "Winson", token: "43n895n4y39432"},
-                characters: [
-                    { id: 1, name: "CharA", points: 100 },
-                    { id: 2, name: "CharB", points: 120 }
-                ],
-                locations: [
-                    { id: 1, name: "LocA", image: "", category: "film" },
-                    { id: 2, name: "LocB", image: "", category: "videogames" }
-                ]
-            });
-            */
         });
     };
 
@@ -53,18 +42,10 @@ const init = token => {
 
         const scene = $('#game');
 
-        console.log(data);
-
-        const loadCharacterScene = () => {
+        const sceneCharacters = () => {
             scene.empty();
             scene.append(`
-                <div id="welcomeText">
-                    <div class="container">
-                        <h1>Welcome, ${data.user.name}!</h1>
-                    </div>
-                </div>
-            `);
-            scene.append(`
+                <h1>Welcome, ${data.user.name}!</h1>
                 <div id="menuCharacterSelect">
                     <div class="container">
                         <div class="row">
@@ -72,7 +53,7 @@ const init = token => {
             for (character of data.characters)
                 $('#menuCharacterSelect .row').append(`
                     <div class="col-6 col-lg-4">
-                        <div class="character" data-id="${character.id}" data-name="${character.name}" data-points="${character.points}">
+                        <div class="character" data-id="${character.id}">
                             ${character.name}<br>
                             ${character.points} pts
                         </div>
@@ -94,23 +75,23 @@ const init = token => {
                 </div>
             `);
             $('#menuCharacterSelect .character').click(function() {
-                alert($(this).data('name'));
+                let id = $(this).data('id');
+                activeCharacter = data.characters.find(e => e.id == id);
+                console.log(activeCharacter);
+                sceneLocations();
             });
             $('#menuCharacterAdd button').click(function() {
                 let newCharacter = {
                     name: $('#menuCharacterAdd input').val(),
                     user_id: data.user.id
                 };
+                if (!newCharacter.name) return;
                 console.log(newCharacter);
                 $.post("/api/characters", newCharacter)
                 .done(result => {
                     console.log(result);
-                    data.characters.push({
-                        id: result.id,
-                        name: result.name,
-                        points: result.points
-                    });
-                    loadCharacterScene();
+                    data.characters.push(result);
+                    sceneCharacters();
                 })
                 .fail(() => {
                     alert("unable to add character");
@@ -125,10 +106,111 @@ const init = token => {
                 alert("Link has been copied to the clipboard.");
             });
 
+        };
 
-        }
+        const sceneLocations = () => {
+            scene.empty();
+            scene.append(`
+                <div id="menuLocationSelect" class="container">
+                    <h2>Where do you want to go today?</h2>
+                    <div class="row">
+            `);
+            for (place of data.locations)
+                $('#game .row').append(`
+                    <div class="col-6">
+                        <div class="location" data-id="${place.id}" style="background-image: url('${place.image}')">
+                            ${place.name}
+                        </div>
+                    </div>
+                `);
+            $('.location').click(function() {
+                let id = $(this).data('id');
+                activeLocation = data.locations.find(e => e.id == id);
+                console.log(activeLocation);
+                sceneDifficulty();
+            });
+        };
 
-        loadCharacterScene();
+        const sceneDifficulty = () => {
+            scene.empty();
+            scene.append(`
+                <div id="menuDifficulty" class="container text-center">
+                    <h2>Pick a difficulty</h2>
+                    <button data-difficulty="easy">Easy</button>
+                    <button data-difficulty="medium">Medium</button>
+                    <button data-difficulty="hard">Hard</button>
+                </div>
+            `);
+            $('#menuDifficulty button').click(function() {
+                activeLocation['difficulty'] = $(this).data('difficulty');
+                console.log(activeLocation);
+                sceneQuiz();
+            });
+        };
+
+        const sceneQuiz = () => {
+            scene.empty();
+            scene.append(`
+                <div id="quiz" style="background-image: url('${activeLocation.image}')">
+                    <div id="questions" class="container">
+            `);
+
+            let current = 0;
+            let questions;
+
+            const showQuestion = question => {
+                let choices = [ ...question.incorrect_answers ];
+                let pointsEarned = 0;
+                let points = {
+                    easy: 5,
+                    medium: 10,
+                    hard: 20
+                };
+                choices.push(question.correct_answer);
+                if (question.type === "multiple")
+                    choices.sort(() => Math.random() - 0.5);
+                if (question.type === "boolean")
+                    choices.sort().reverse();
+                let q = $('#questions');
+                q.empty();
+                q.append(`
+                    <h2>${question.question}</h2>
+                `);
+                for (choice of choices)
+                    q.append(`<div class="choice" data-choice="${choice}">${choice}</div>`);
+                $('#questions .choice').click(function() {
+                    if ($(this).data('choice') === question.correct_answer) {
+                        alert('Correct');
+                        pointsEarned += points[question.difficulty];
+                    } else {
+                        alert('Incorrect');
+                        pointsEarned -= points[question.difficulty];
+                    }
+                    current++;
+                    if (current < questions.length) {
+                        showQuestion(questions[current]);
+                    } else {
+                        alert(`You earned ${pointsEarned} points.`);
+                        //endQuiz();
+                    }
+                });
+            };
+
+            $.getJSON(`/api/questions/${activeLocation.category}/${activeLocation.difficulty}`)
+            .done(result => {
+                questions = result;
+                console.log(questions);
+                showQuestion(questions[current]);
+            })
+            .fail(() => {
+                alert('Unable to retrieve questions.');
+            });
+
+
+
+        };
+
+        sceneCharacters();
 
     };
 
