@@ -12,9 +12,44 @@ html, body {
     margin: 20px;
 }
 #menuCharacterSelect .character {
-    border: 1px solid #333;
+    border: 2px solid #00000033;
+    margin: 0 0 30px;
     padding: 10px;
 }
 #menuCharacterSelect .character:hover {
-    border: 1px solid teal;
+    border-color: teal;
+}
+
+#menuLocationSelect .location {
+    margin: 0 0 30px;
+    padding: 40px 20px;
+    text-align: center;
+    box-sizing: border-box;
+    background-size: cover;
+    border: 2px solid #00000033;
+}
+#menuLocationSelect .location:hover {
+    border-color: teal;
+}
+
+@keyframes slide {
+    from { background-position: 100% 0; }
+    to { background-position: 200% 0; }
+}
+
+#quiz {
+    background-size: cover;
+    height: 100%;
+	animation: slide 5s linear infinite;
+}
+#quiz .choice {
+    border: 2px solid transparent;
+    padding: 10px;
+    cursor: pointer;
+}
+#quiz .choice:hover {
+    border-color: black;
+}
+#quiz .choice:focus {
+    border-color: red;
 }
