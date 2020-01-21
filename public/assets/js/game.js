@@ -190,9 +190,35 @@ const init = token => {
                     if (current < questions.length) {
                         showQuestion(questions[current]);
                     } else {
-                        alert(`You earned ${pointsEarned} points.`);
-                        //endQuiz();
+                        endQuiz(pointsEarned);
                     }
+                });
+            };
+
+            const endQuiz = (pointsEarned) => {
+                scene.empty();
+                let changeOfPoints = { points: activeCharacter.points + pointsEarned }
+                $.ajax({
+                    url: `/api/updateCharacter/${activeCharacter.id}`,
+                    type: 'PUT',
+                    data: changeOfPoints
+                })
+                .then(() => {
+                    data.characters.find(e => e.id === activeCharacter.id).points = changeOfPoints.points;
+                    scene.append(`
+                        <div id="ending">
+                            <p>The road was rough but you made it!</p>
+                            <p>You gained ${pointsEarned} points.</p>
+                            <button class="return">Return Home</button>
+                        </div>
+                    `);
+                    $('#ending .return').click(function() {
+                        sceneCharacters();
+                    });
+                })
+                .fail(() => {
+                    alert('Error updating character.');
+                    sceneCharacters();
                 });
             };
 
@@ -204,6 +230,7 @@ const init = token => {
             })
             .fail(() => {
                 alert('Unable to retrieve questions.');
+                location.reload();
             });
 
 
