@@ -61,4 +61,22 @@ router.post('/characters', (req, res) => {
     });
 });
 
+router.put('/updatecharacters', (req, res) => {
+    new Promise(function(resolve, reject) {
+        console.log(req.body);
+        resolve(controllers.updateCharacter(req.body.user_id,req.body.points));
+    }).then(function(result) {
+        res.json(result);
+    });
+});
+
+router.delete('/deleteCharacter/:id', function(req, res){
+    new Promise(function(resolve, reject) {
+        resolve(controllers.deleteCharacter(req.params.id));
+    }).then(function(result) {
+      res.json(result);
+    });
+});
+
+
 module.exports = router;
