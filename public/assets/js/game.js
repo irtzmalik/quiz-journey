@@ -45,32 +45,42 @@ const init = token => {
         const sceneCharacters = () => {
             scene.empty();
             scene.append(`
-                <h1>Welcome, ${data.user.name}!</h1>
                 <div id="menuCharacterSelect">
                     <div class="container">
+                        <h1>Welcome, ${data.user.name}!</h1>
                         <div class="row">
             `);
             for (character of data.characters)
                 $('#menuCharacterSelect .row').append(`
-                    <div class="col-6 col-lg-4">
-                        <div class="character" data-id="${character.id}">
-                            ${character.name}<br>
-                            ${character.points} pts
+                    <div class="col-6 col-md-4">
+                        <div class="character" title="${character.name}" data-id="${character.id}">
+                            <div class="characterSprite"><img src="/assets/img/wizard-10x.gif" alt="" style="width: 128px; margin: 0 0 5px;"></div>
+                            <div class="characterName">${character.name}</div>
+                            <div class="characterPoints">${character.points}</div>
                         </div>
                     </div>
                 `);
-            scene.append(`
-                <div id="menuCharacterAdd">
-                    <div class="container">
-                        <input type="text" id="name">
-                        <button>Add Character</button>
+            $('#menuCharacterSelect .row').append(`
+                <div class="col-6 col-md-4">
+                    <div id="menuCharacterAdd">
+                        <div class="full-center">
+                            <p>New Character</p>
+                            <input type="text" class="form-control" id="name">
+                            <button class="btn btn-primary">Add</button>
+                        </div>
                     </div>
                 </div>
+            `)
+            scene.append(`
                 <div id="saveCodeLink">
                     <div class="container">
-                        Bookmark this link to load your game<br>
-                        <input type="text" value="${location.href}" readonly>
-                        <button>Copy Link</button>
+                        <p>Bookmark this link to save your game</p>
+                        <div class="input-group">
+                            <input type="text" class="form-control" value="${location.href}" readonly>
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary">Copy Link</button>
+                            </span>
+                        </div>
                     </div>
                 </div>
             `);
@@ -103,7 +113,10 @@ const init = token => {
             $('#saveCodeLink button').click(function() {
                 $('#saveCodeLink input').select();
                 document.execCommand("copy");
-                alert("Link has been copied to the clipboard.");
+                $('#saveCodeLink button').text("Copied");
+                setTimeout(() => {
+                    $('#saveCodeLink button').text("Copy Link");
+                }, 2000);
             });
 
         };
@@ -111,15 +124,18 @@ const init = token => {
         const sceneLocations = () => {
             scene.empty();
             scene.append(`
-                <div id="menuLocationSelect" class="container">
-                    <h2>Where do you want to go today?</h2>
-                    <div class="row">
+                <div id="menuLocationSelect">
+                    <div class="container">
+                        <h2>Select your destination</h2>
+                        <div class="row">
             `);
             for (place of data.locations)
                 $('#game .row').append(`
                     <div class="col-6">
                         <div class="location" data-id="${place.id}" style="background-image: url('${place.image}')">
-                            ${place.name}
+                            <div class="full-center">
+                                ${place.name}
+                            </div>
                         </div>
                     </div>
                 `);
@@ -134,12 +150,12 @@ const init = token => {
         const sceneDifficulty = () => {
             scene.empty();
             scene.append(`
-                <div id="menuDifficulty" class="container text-center">
-                    <h2>Pick a difficulty</h2>
-                    <button data-difficulty="easy">Easy</button>
-                    <button data-difficulty="medium">Medium</button>
-                    <button data-difficulty="hard">Hard</button>
-                </div>
+                <div id="menuDifficulty">
+                    <div class="container text-center">
+                        <h2>Pick a difficulty</h2>
+                        <button class="btn btn-primary" data-difficulty="easy">Easy (5 pts)</button>
+                        <button class="btn btn-primary" data-difficulty="medium">Medium (10 pts)</button>
+                        <button class="btn btn-primary" data-difficulty="hard">Hard (20 pts)</button>
             `);
             $('#menuDifficulty button').click(function() {
                 activeLocation['difficulty'] = $(this).data('difficulty');
@@ -152,20 +168,21 @@ const init = token => {
             scene.empty();
             scene.append(`
                 <div id="quiz" style="background-image: url('${activeLocation.image}')">
+                    <img class="sprite" src="/assets/img/wizard-10x.gif" alt="">
                     <div id="questions" class="container">
             `);
 
             let current = 0;
             let questions;
+            let pointsEarned = 0;
+            let points = {
+                easy: 5,
+                medium: 10,
+                hard: 20
+            };
 
             const showQuestion = question => {
                 let choices = [ ...question.incorrect_answers ];
-                let pointsEarned = 0;
-                let points = {
-                    easy: 5,
-                    medium: 10,
-                    hard: 20
-                };
                 choices.push(question.correct_answer);
                 if (question.type === "multiple")
                     choices.sort(() => Math.random() - 0.5);
@@ -178,19 +195,24 @@ const init = token => {
                 `);
                 for (choice of choices)
                     q.append(`<div class="choice" data-choice="${choice}">${choice}</div>`);
+                q.append(`<div id="questionResult">`);
                 $('#questions .choice').click(function() {
                     if ($(this).data('choice') === question.correct_answer) {
-                        alert('Correct');
+                        $('#questionResult').text(`Correct! +${points[question.difficulty]} pts`);
                         pointsEarned += points[question.difficulty];
                     } else {
-                        alert('Incorrect');
+                        $('#questionResult').text(`Incorrect! -${points[question.difficulty]} pts`);
                         pointsEarned -= points[question.difficulty];
                     }
                     current++;
                     if (current < questions.length) {
-                        showQuestion(questions[current]);
+                        setTimeout(() => {
+                            showQuestion(questions[current]);
+                        }, 1000);
                     } else {
-                        endQuiz(pointsEarned);
+                        setTimeout(() => {
+                            endQuiz(pointsEarned);
+                        }, 1000);
                     }
                 });
             };
@@ -207,12 +229,12 @@ const init = token => {
                     data.characters.find(e => e.id === activeCharacter.id).points = changeOfPoints.points;
                     scene.append(`
                         <div id="ending">
-                            <p>The road was rough but you made it!</p>
-                            <p>You gained ${pointsEarned} points.</p>
-                            <button class="return">Return Home</button>
-                        </div>
+                            <div class="container">
+                                <p>The road was rough but you made it!</p>
+                                <p>You received ${pointsEarned} points.</p>
+                                <button class="btn btn-primary" id="return">Return Home</button>
                     `);
-                    $('#ending .return').click(function() {
+                    $('#ending #return').click(function() {
                         sceneCharacters();
                     });
                 })

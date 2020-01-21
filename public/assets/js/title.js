@@ -7,12 +7,11 @@ const init = () => {
     const renderTitleScreen = () => {
         scene.empty();
         scene.append(`
-            <div class="jumbotron text-center">
-                <h1>Quiz Journey</h1>
-            </div>
-            <div class="text-center">
-                <button id="btnNewGame" class="btn btn-primary">New Game</button>
-                <button id="btnLoadGame" class="btn btn-primary">Load Game</button>
+            <div id="title">
+                <div id="gameButtons" class="full-center">
+                    <button id="btnNewGame" class="btn btn-primary">New Game</button>
+                    <button id="btnLoadGame" class="btn btn-primary">Load Game</button>
+                </div>
             </div>
         `);
         $('#btnNewGame').click(newGame);
@@ -20,29 +19,59 @@ const init = () => {
     };
 
     const newGame = () => {
-        let name = prompt("Enter your name");
-        if (name) name = name.trim();
-        if (!name) return alert("Please enter a name.");
-        $.post("/api/users", { name: name })
-        .done(result => {
-            location.href = `/${result.token}`;
-        })
-        .fail(() => {
-            alert("Error: Unable to create user.");
+        scene.empty().append(`
+            <div id="title">
+                <div id="register" class="full-center text-center">
+                    <p>Enter your name</p>
+                    <input type="text" class="form-control">
+                    <button class="btn btn-primary">Begin your journey</button>
+                </div>
+            </div>
+        `);
+        $('#register button').click(function() {
+            let name = $('#register input').val();
+            if (name) name = name.trim();
+            if (!name) {
+                alert("Please enter a name.");
+                return renderTitleScreen();
+            }
+            $.post("/api/users", { name: name })
+            .done(result => {
+                location.href = `/${result.token}`;
+            })
+            .fail(() => {
+                alert("Error: Unable to create user.");
+                location.reload();
+            });
         });
     };
 
     const loadGame = () => {
-        let token = prompt("Enter your save code");
-        if (token) token = token.trim();
-        if (!token) return alert("Game not loaded.");
-        $.get(`/api/token/${token}`)
-        .done(result => {
-            result ? location.href = `/${result.token}`
-            : alert("Saved game not found.");
-        })
-        .fail(() => {
-            alert("Error: Unable to fetch data.");
+        scene.empty().append(`
+            <div id="title">
+                <div id="register" class="full-center text-center">
+                    <p>Enter your save code</p>
+                    <input type="text" class="form-control">
+                    <button class="btn btn-primary">Load Game</button>
+                </div>
+            </div>
+        `);
+        $('#register button').click(function() {
+            let token = $('#register input').val();
+            if (token) token = token.trim();
+            if (!token) {
+                alert("Game not loaded.");
+                return renderTitleScreen();
+            }
+            $.get(`/api/token/${token}`)
+            .done(result => {
+                result ? location.href = `/${result.token}`
+                : alert("Saved game not found.");
+            })
+            .fail(() => {
+                alert("Error: Unable to fetch data.");
+                location.reload();
+            });
         });
     };
 
