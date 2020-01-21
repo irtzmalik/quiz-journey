@@ -1,8 +1,8 @@
-module.exports = function deleteCharacter(char_id) {
+module.exports = function deleteCharacter(id) {
   const db = require('../models/index');
   return db.Characters.destroy({
     where: {
-      id: char_id
+      id: id
     }
   });
 };
