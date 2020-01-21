@@ -190,9 +190,21 @@ const init = token => {
                     if (current < questions.length) {
                         showQuestion(questions[current]);
                     } else {
-                        alert(`You earned ${pointsEarned} points.`);
-                        //endQuiz();
+                        endQuiz(pointsEarned);
                     }
+                });
+            };
+
+            const endQuiz = (pointsEarned) => {
+                scene.empty();
+                scene.append(`
+                    <div id="ending">
+                        <p>You earned ${pointsEarned} points.</p>
+                        <button class="return">Return Home</button>
+                    </div>
+                `);
+                $('#ending .return').click(function() {
+                    sceneCharacters();
                 });
             };
 
@@ -204,6 +216,7 @@ const init = token => {
             })
             .fail(() => {
                 alert('Unable to retrieve questions.');
+                location.reload();
             });
 
 
