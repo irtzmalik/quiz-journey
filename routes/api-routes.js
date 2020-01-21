@@ -61,10 +61,10 @@ router.post('/characters', (req, res) => {
     });
 });
 
-router.put('/updatecharacters', (req, res) => {
+router.put('/updateCharacter/:id', (req, res) => {
     new Promise(function(resolve, reject) {
         console.log(req.body);
-        resolve(controllers.updateCharacter(req.body.user_id,req.body.points));
+        resolve(controllers.updateCharacter(req.params.id, req.body.points));
     }).then(function(result) {
         res.json(result);
     });
