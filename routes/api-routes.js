@@ -70,4 +70,13 @@ router.put('/updatecharacters', (req, res) => {
     });
 });
 
+router.delete('/deleteCharacter/:id', function(req, res){
+    new Promise(function(resolve, reject) {
+        resolve(controllers.deleteCharacter(req.params.id));
+    }).then(function(result) {
+      res.json(result);
+    });
+});
+
+
 module.exports = router;
