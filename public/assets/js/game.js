@@ -1,5 +1,7 @@
 const init = token => {
 
+    let test = false;
+
     let data, activeCharacter, activeLocation;
 
     const checkToken = token => {
@@ -29,7 +31,7 @@ const init = token => {
                 characters: characters[0],
                 locations: locations[0]
             };
-            console.log(data);
+            if (test) console.log(data);
             main(data);
         })
         .fail(err => {
@@ -87,7 +89,7 @@ const init = token => {
             $('#menuCharacterSelect .character').click(function() {
                 let id = $(this).data('id');
                 activeCharacter = data.characters.find(e => e.id == id);
-                console.log(activeCharacter);
+                if (test) console.log(activeCharacter);
                 sceneLocations();
             });
             $('#menuCharacterAdd button').click(function() {
@@ -96,10 +98,10 @@ const init = token => {
                     user_id: data.user.id
                 };
                 if (!newCharacter.name) return;
-                console.log(newCharacter);
+                if (test) console.log(newCharacter);
                 $.post("/api/characters", newCharacter)
                 .done(result => {
-                    console.log(result);
+                    if (test) console.log(result);
                     data.characters.push(result);
                     sceneCharacters();
                 })
@@ -142,7 +144,7 @@ const init = token => {
             $('.location').click(function() {
                 let id = $(this).data('id');
                 activeLocation = data.locations.find(e => e.id == id);
-                console.log(activeLocation);
+                if (test) console.log(activeLocation);
                 sceneDifficulty();
             });
         };
@@ -159,7 +161,7 @@ const init = token => {
             `);
             $('#menuDifficulty button').click(function() {
                 activeLocation['difficulty'] = $(this).data('difficulty');
-                console.log(activeLocation);
+                if (test) console.log(activeLocation);
                 sceneQuiz();
             });
         };
@@ -247,7 +249,7 @@ const init = token => {
             $.getJSON(`/api/questions/${activeLocation.category}/${activeLocation.difficulty}`)
             .done(result => {
                 questions = result;
-                console.log(questions);
+                if (test) console.log(questions);
                 showQuestion(questions[current]);
             })
             .fail(() => {
