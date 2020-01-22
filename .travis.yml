@@ -1,6 +1,11 @@
 language: node_js
 node_js:
-- stable
+  - stable
+services:
+  - mysql
+before_install:
+  - mysql -u root --password="" -e 'source database/schema.sql; source database/seeds.sql; source da
+tabase/locations.sql;'
 deploy:
   provider: heroku
   api_key:
@@ -8,5 +13,3 @@ deploy:
   app: evening-refuge-98999
   on:
     repo: Winyumi/quiz-journey
-services:
-  - mysql    

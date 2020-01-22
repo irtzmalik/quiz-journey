@@ -1,4 +1,5 @@
 USE quiz_journey;
+
 INSERT INTO Locations (name, image, category, createdAt, updatedAt) VALUES
 ('Earth Science', '/assets/img/mountains.png', 'geography', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('Cinema', '/assets/img/mountains.png', 'film', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
