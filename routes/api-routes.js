@@ -74,7 +74,7 @@ router.put('/updateCharacter/:id', (req, res) => {
             res.json(result);
         });
     } else {
-        res.json();
+        res.status(401).json('');
     }
 });
 
@@ -89,7 +89,7 @@ router.delete('/deleteCharacter/:id', function(req, res){
         res.json(result);
         });
     } else {
-        res.json();
+        res.status(401).json('');
     }
 });
 
