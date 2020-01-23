@@ -12,3 +12,5 @@ services:
   - mysql
 before_install:
   - mysql -u root --password="" -e 'source database/schema.sql; source database/seeds.sql; source database/locations.sql;'
+env:
+  - DB_USER=root DB_PASSWORD= DB_NAME=quiz_journey
