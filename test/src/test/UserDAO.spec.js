@@ -15,15 +15,15 @@ jest.mock('../main/models/users', () => () => {
 describe("Get User Mock test", () => {  
   it("It should get Test as name in mock database", async () => {
     const user = await UserDAO.getOneUser();
-    expect(user.id).toEqual('Test');
+    expect(user.name).toEqual('Test');
   })
 })
 
 
-// describe("Get User by id Mock test", () => {  
-//   it("It should get 1 as id in mock database", async () => {
-//     const user1 = await UserDAO.getUserbyId(1);
-//     expect(user1.id).toEqual(1);
-//   })
-// })
+describe("Get User by id Mock test", () => {  
+  it("It should get 1 as id in mock database", async () => {
+    const user1 = await UserDAO.getOneUser();
+    expect(user1.id).toEqual(1);
+  })
+})
   
