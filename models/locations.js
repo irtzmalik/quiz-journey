@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     name: DataTypes.STRING,
     image: DataTypes.STRING,
-    category: DataTypes.INTEGER,
+    category: DataTypes.STRING,
   });
   return Locations;
 };

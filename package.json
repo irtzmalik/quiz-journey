@@ -4,7 +4,7 @@
   "description": "A trivia adventure game for educational purposes.",
   "main": "server.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --detectOpenHandles",
     "start": "nodemon server.js"
   },
   "repository": {

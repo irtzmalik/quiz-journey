@@ -61,4 +61,41 @@ router.post('/characters', (req, res) => {
     });
 });
 
+router.put('/updateCharacter/:id', (req, res) => {
+    let host = req.headers.host;
+    let origin = req.headers.origin;
+    let regex = new RegExp(host, "gi");
+    let check = regex.test(origin);
+    console.log(host, origin, check);
+    if (check) {
+        new Promise(function(resolve, reject) {
+            console.log(req.headers);
+            console.log(req.body);
+            resolve(controllers.updateCharacter(req.params.id, req.body.points));
+        }).then(function(result) {
+            res.json(result);
+        });
+    } else {
+        res.status(401).json(null);
+    }
+});
+
+router.delete('/deleteCharacter/:id', function(req, res){
+    let host = req.headers.host;
+    let origin = req.headers.origin;
+    let regex = new RegExp(host, "gi");
+    let check = regex.test(origin);
+    console.log(host, origin, check);
+    if (check) {
+        new Promise(function(resolve, reject) {
+            resolve(controllers.deleteCharacter(req.params.id));
+        }).then(function(result) {
+            res.json(result);
+        });
+    } else {
+        res.status(401).json(null);
+    }
+});
+
+
 module.exports = router;
