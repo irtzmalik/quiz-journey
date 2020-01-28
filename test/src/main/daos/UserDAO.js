@@ -1,23 +1,9 @@
 
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize('dbname', 'dbuser', 'dbpassword', {
-    host: 'mydb.host.com',
-    dialect: 'mysql',
-    operatorsAliases: false,
-    dialectOptions: {
-        dateStrings: true,
-        typeCast: function (field, next) { 
-            if (field.type === 'DATETIME') {
-                return field.string()
-            }
-            return next()
-        },
-    },
-    timezone: "Canada/Toronto"
-});
+var sequelize1 = require('../config.js');
 
-const User = require('../models/users')(sequelize, Sequelize); 
-
+const User = require('../models/users')(sequelize1, Sequelize); 
+User.find
 module.exports = {
     getOneUser: function() {
         return new Promise((resolve, reject) => {
@@ -32,3 +18,5 @@ module.exports = {
         });
     }
 };
+
+
