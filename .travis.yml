@@ -1,12 +1,16 @@
 language: node_js
 node_js:
-- stable
+  - stable
 deploy:
   provider: heroku
   api_key:
     secure: "ltHaLltnfWYr3Zz1VEAdNjuXzoaz5IyWcu+8xp7wCpivyC5JCxUL4t4wsVsgtyMnBx74TzBC/hVR9wJzKk5Y3Ak7nL3t4LJ3iGPh2ChmUTBxmZMpRzc/jPJ19iMA+hrscuFiEbMbxFLAWDZ/fiEPgTvWOmOFAkTnK1AwTbpWxSfa23qQLtIZgG6WzWGRkBYKUzTK1zejSheNaqcXf/oN2cd79eAGA1YNeqZHhEst0KTQgVDARiGADz9SlS3R4D7ja31TfvYjLfDsJxsknxfIXHmG7gP6r24m2kyBe6yuQFQvEHBYlRuxrLDcwgBlT17XLfmJZPOad2D03YIdPW0/Z6XWUyd4zRDHfVtfVtCHEcKbTdcV1y8qoueHlZZWPor/yFc8Kwu06LU6cR7B8ae7hdYXf7NK2vfgT36ge0tXovlUaA8uF60jAyIT7A+VVpETVPqhBxARfqfbR5KB26CRBaty6YBHHOhEUTIyhRi2ymuoppYqsW82865gTReMwUu/6S4A2Z0FMwHmF9BDhSd5ZbfXILu3dwJXeoby6qLOliCqLwIQM6c1TfWalHSqRPJ82kUBWkczAgsV5IGp09aRmv02G12Lkc3Tt+ug0FhsSefiRpkm8vGYux50l3iYlCMAGEPYCS+9IiDIt7+ohj+DrJHMOuuaZpwtw5BPtiC/cHA="
-  app: evening-refuge-98999
+  app: quiz-journey
   on:
     repo: Winyumi/quiz-journey
 services:
-  - mysql    
+  - mysql
+before_install:
+  - mysql -u root --password="" -e 'source database/schema.sql; source database/seeds.sql; source database/locations.sql;'
+env:
+  - DB_USER=root DB_PASSWORD= DB_NAME=quiz_journey

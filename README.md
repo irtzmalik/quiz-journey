@@ -6,7 +6,7 @@ Quizzing turned into fun, this application is to make education topics fun for l
 
 This app runs on `express`, `express-handlebars`, `mysql2`, and `sequelize` Node.js modules, along with many others.
 
-[Live Demo](https://evening-refuge-98999.herokuapp.com/)
+[Live Demo](https://quiz-journey.herokuapp.com/)
 
 
 ## Installation

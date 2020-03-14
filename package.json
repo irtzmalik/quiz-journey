@@ -4,7 +4,7 @@
   "description": "A trivia adventure game for educational purposes.",
   "main": "server.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --detectOpenHandles",
     "start": "nodemon server.js"
   },
   "repository": {
@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Winyumi/quiz-journey#readme",
   "dependencies": {
+    "@efi.shtain/jest-sequelize": "0.0.3",
     "axios": "^0.19.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

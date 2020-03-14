@@ -7,9 +7,10 @@ test('Token should be at least 40 charaters long', () => {
     });
 })
 
-test('The 2nd location should be Cinema', () => {
+test('The name should be a string', () => {
     expect.assertions(1);
-    return controllers.getLocations(1).then(data => {
-        expect(data[1].name).toEqual('Cinema');
+    return controllers.getUser(1).then(data => {
+        expect(typeof 'data[1].name').toBe('string');
     });
 })
+

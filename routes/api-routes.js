@@ -65,7 +65,9 @@ router.put('/updateCharacter/:id', (req, res) => {
     let host = req.headers.host;
     let origin = req.headers.origin;
     let regex = new RegExp(host, "gi");
-    if (origin.match(regex)) {
+    let check = regex.test(origin);
+    console.log(host, origin, check);
+    if (check) {
         new Promise(function(resolve, reject) {
             console.log(req.headers);
             console.log(req.body);
@@ -74,7 +76,7 @@ router.put('/updateCharacter/:id', (req, res) => {
             res.json(result);
         });
     } else {
-        res.status(401).json('');
+        res.status(401).json(null);
     }
 });
 
@@ -82,14 +84,16 @@ router.delete('/deleteCharacter/:id', function(req, res){
     let host = req.headers.host;
     let origin = req.headers.origin;
     let regex = new RegExp(host, "gi");
-    if (origin.match(regex)) {
+    let check = regex.test(origin);
+    console.log(host, origin, check);
+    if (check) {
         new Promise(function(resolve, reject) {
             resolve(controllers.deleteCharacter(req.params.id));
         }).then(function(result) {
-        res.json(result);
+            res.json(result);
         });
     } else {
-        res.status(401).json('');
+        res.status(401).json(null);
     }
 });
 
